@@ -1,0 +1,34 @@
+{
+    "name": "j6s-acc/log-telegram",
+    "description": "Does logs messages in via telegram-API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jigius",
+            "email": "jigius@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.4.0",
+        "jigius/acc-core-log": "dev-master",
+      "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "J6sAcc\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:jigius/acc-core-log.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:jigius/acc-core.git"
+        }
+    ]
+
+}
