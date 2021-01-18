@@ -85,7 +85,7 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
         if (!isset($this->i['chatId']) || !isset($this->i['requestUri'])) {
             throw new LogicException("Not initialized in a proper way");
         }
-        if (($ch = curl_init($this->i['uri'])) === false) {
+        if (($ch = curl_init($this->i['requestUri'])) === false) {
             throw new RuntimeException("Couldn't initialize a connect to a CURL-handler");
         }
         $opts = [
@@ -99,18 +99,7 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
                     if (!isset($i['dt']) || !isset($i['level']) || !isset($i['text'])) {
                         throw new DomainException("invalid data");
                     }
-                    return
-                        sprintf(
-                            "%s %s [%u] %s\n", $i['dt'],
-                            str_pad(
-                                $entity->level()->toString(),
-                                7,
-                                " ",
-                                STR_PAD_LEFT
-                            ),
-                            getmypid(),
-                            $i['text']
-                        );
+                    return sprintf("%s\n===\n%s\n", $entity->level()->toString(), $i['text']);
                 }) ()
             ],
             CURLOPT_SSL_VERIFYPEER => false
@@ -192,7 +181,7 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
     /**
      * @inheritDoc
      */
-    public function withMinLevel(Log\LogLevel $level): self
+    public function withMinLevel(Log\LogLevelInterface $level): self
     {
         $obj = $this->blueprinted();
         $obj->minLevel = $level;
