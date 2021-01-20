@@ -102,13 +102,7 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => [
                 'chat_id' => $this->i['chatId'],
-                'text' => (function () use ($entity): string {
-                    $i = $entity->serialized();
-                    if (!isset($i['dt']) || !isset($i['level']) || !isset($i['text'])) {
-                        throw new DomainException("invalid data");
-                    }
-                    return sprintf("%s\n===\n%s\n", $entity->level()->toString(), $i['text']);
-                }) ()
+                'text' => $this->p->entry($entity)
             ],
             CURLOPT_SSL_VERIFYPEER => false
         ];
