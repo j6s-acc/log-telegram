@@ -22,6 +22,8 @@ use DomainException;
 /**
  * Class TelegramLog
  *
+ * Does the passing of log entries into a specified Telegram's group
+ *
  * @package J6sAcc\App\Log
  */
 final class TelegramLog implements TelegramLogInterface, SerializableInterface, Log\LogEmbeddableInterface
@@ -38,16 +40,22 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
      * @var Log\LogInterface
      */
     private Log\LogInterface $original;
+    /**
+     * @var Log\ProcessableEntryInterface
+     */
+    private $p;
 
     /**
      * TelegramLog constructor.
      *
      * @param Log\LogInterface $log
+     * @param Log\ProcessableEntryInterface|null $p
      */
-    public function __construct(Log\LogInterface $log)
+    public function __construct(Log\LogInterface $log, ?Log\ProcessableEntryInterface $p = null)
     {
         $this->i = [];
         $this->original = $log;
+        $this->p = $p ?? new VanillaProcessedEntry();
         $this->minLevel = new Log\LogLevel(Log\LogLevelInterface::INFO);
     }
 
