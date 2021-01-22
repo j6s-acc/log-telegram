@@ -17,7 +17,6 @@ use Acc\Core\Log;
 use Acc\Core\SerializableInterface;
 use RuntimeException;
 use LogicException;
-use DomainException;
 
 /**
  * Class TelegramLog
@@ -195,10 +194,10 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
      */
     public function withEmbedded(Log\LogInterface $log): self
     {
+        $obj = $this->blueprinted();
         if ($this->original instanceof Log\LogEmbeddableInterface) {
-            $obj = $this->original->withEmbedded($log);
+            $obj->original = $this->original->withEmbedded($log);
         } else {
-            $obj = $this->blueprinted();
             $obj->original = $log;
         }
         return $obj;
@@ -209,6 +208,6 @@ final class TelegramLog implements TelegramLogInterface, SerializableInterface, 
      */
     public function created(): self
     {
-        return new self($this->original);
+        return new self($this->original, $this->p);
     }
 }
